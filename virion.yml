@@ -1,0 +1,6 @@
+name: GeometryLib
+version: 0.0.1
+antigen: arisify\geometry
+api: 4.0.0
+authors: [Arisify]
+description: Minecraft Geometry Library for PMMP
