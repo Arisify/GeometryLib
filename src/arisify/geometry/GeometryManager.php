@@ -51,4 +51,12 @@ class GeometryManager{
 		}
 		return true;
 	}
+
+	public function removeGeometry(string $geometryName) : bool{
+		if (isset($this->geometry[$geometryName])) {
+			unset($this->geometry[$geometryName]);
+			return true;
+		}
+		return false;
+	}
 }
