@@ -19,6 +19,14 @@ namespace arisify\geometry;
 use pocketmine\math\Vector2;
 
 class UV{
+	/**
+	 * @param Vector2|null $north Specifies the UV's for the face that stretches along the x and y axes, and faces the -z axis.
+	 * @param Vector2|null $south Specifies the UV's for the face that stretches along the x and y axes, and faces the z axis
+	 * @param Vector2|null $east Specifies the UV's for the face that stretches along the z and y axes, and faces the x axis
+	 * @param Vector2|null $west Specifies the UV's for the face that stretches along the z and y axes, and faces the -x axis
+	 * @param Vector2|null $up Specifies the UV's for the face that stretches along the x and z axes, and faces the y axis
+	 * @param Vector2|null $down Specifies the UV's for the face that stretches along the x and z axes, and faces the -y axis
+	 */
 	public function __construct(
 		public ?Vector2 $north = null,
 		public ?Vector2 $south = null,

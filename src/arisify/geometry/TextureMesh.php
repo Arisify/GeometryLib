@@ -21,11 +21,11 @@ use pocketmine\math\Vector3;
 class TextureMesh{
 	/**
 	 * @param string       $format_version
-	 * @param Vector3      $position
-	 * @param string       $texture     This was empty string in 1.12 but later change to default in 1.16
-	 * @param Vector3|null $rotation
-	 * @param Vector3|null $scale
-	 * @param Vector3|null $local_pivot This was added in format version 1.16.0
+	 * @param Vector3      $position The position of the pivot point after rotation (in *entity space* not texture or bone space) of the texture geometry
+	 * @param string       $texture The friendly-named texture to use | This was empty string "" in 1.12 but later change to "default" later in higher format
+	 * @param Vector3|null $rotation The rotation (in degrees) of the texture geometry relative to the offset
+	 * @param Vector3|null $scale The scale (in degrees) of the texture geometry relative to the offset
+	 * @param Vector3|null $local_pivot The pivot point on the texture (in *texture space* not entity or bone space) of the texture geometry
 	 */
 	public function __construct(
 		protected string $format_version,

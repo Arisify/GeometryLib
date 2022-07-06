@@ -49,14 +49,14 @@ $known_texture_meshes = [
 $known_uv = "array|object";
 
 function checkVarType(string $predict, string $real) : bool{
-	$real =  match(strtolower($real)) {
+	$validate = static fn(string $s) => match(strtolower($s)) {
 		"int", "integer", "float" => "double",
 		"bool" => "boolean",
 		"str" => "string",
-		default => $real
+		default => $s
 	};
 	foreach (explode('|', $predict) as $p) {
-		if ($p === $real) {
+		if ($validate($p) === $validate($real)) {
 			return true;
 		}
 	}
@@ -89,6 +89,7 @@ foreach(glob(MCPATH . "*") as $file) {
 	$format_version = $data["format_version"];
 	if (!in_array($format_version, $known_format_version, true)) {
 		print("> A new format_version was added: " . $format_version);
+		print ($file . PHP_EOL .PHP_EOL);
 		continue;
 	}
 	$krl = $known_root_list($format_version);
@@ -97,11 +98,15 @@ foreach(glob(MCPATH . "*") as $file) {
 		$real = gettype($d);
 		if ($r !== null) {
 			if (!checkVarType($r, $real)) {
-				print ("> Tag: $i changed from $r => $real" . PHP_EOL . PHP_EOL);
+				print ("> Tag: $i changed from $r => $real" . PHP_EOL);
+				print ($format_version . PHP_EOL);
+				print ($file . PHP_EOL .PHP_EOL);
 			}
 			continue;
 		}
-		print ("> A new tag has been added to root list: $i => " . gettype($d) . PHP_EOL . PHP_EOL);
+		print ("> A new tag has been added to root list: $i => " . gettype($d) . PHP_EOL);
+		print ($format_version . PHP_EOL);
+		print ($file . PHP_EOL .PHP_EOL);
 	}
 
 	switch ($format_version) {
@@ -114,7 +119,7 @@ foreach(glob(MCPATH . "*") as $file) {
 			$geometries = (array) $data["minecraft:geometry"];
 			break;
 		default:
-			print("> A new format_version was added: " . $format_version);
+			print("> A new format_version was added: " . $format_version . PHP_EOL . $file . PHP_EOL);
 			continue 2;
 	}
 
@@ -125,15 +130,17 @@ foreach(glob(MCPATH . "*") as $file) {
 		$bones = $ged["bones"];
 
 		foreach ($descriptions as $k => $description) {
+			$real = gettype($description);
 			if (isset($known_description[$k])) {
 				$predict = $known_description[$k];
-				$real = gettype($k);
-				if (checkVarType($predict, $real)) {
-					print("");
+				if (!checkVarType($predict, $real)) {
+					print("> $identifier 's descriptions: $k changed from $predict to $real" . PHP_EOL . $file . PHP_EOL .  PHP_EOL);
 				}
 				continue;
 			}
-			print ("NEW TAG ADDED");
+			print ("> A new tag has been added to descriptions list: $k => $real" . PHP_EOL);
+			print ($format_version . PHP_EOL);
+			print ($file . PHP_EOL .PHP_EOL);
 		}
 
 		foreach ($bones as $bone) {

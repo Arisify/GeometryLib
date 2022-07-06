@@ -28,13 +28,15 @@ class Geometry{
 	/**
 	 * @param string      $format_version
 	 * @param Description $description
-	 * @param Bone[]      $bones
+	 * @param Bone[]      $bones Bones define the 'skeleton' of the mob: the parts that can be animated, and to which geometry and other bones are attached.
+	 * @param string|null $cape
 	 * @param array|null  $rawData
 	 */
 	public function __construct(
 		protected string      $format_version,
 		protected Description $description,
-	    array                 $bones,
+	    ?array                 $bones = null, // Optional
+		?string               $cape = null, // Optional
 		protected ?array      $rawData = null
 	){
 	}
