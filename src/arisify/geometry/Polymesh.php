@@ -16,7 +16,19 @@ declare(strict_types=1);
 
 namespace arisify\geometry;
 
+use pocketmine\math\Vector2;
+use pocketmine\math\Vector3;
+
 class Polymesh{
+	public function __construct(
+		bool $normalized_uvs,
+		Vector3 $positions,
+		Vector2|UV $uv,
+		Vector3 $normals,
+		$polys
+	){
+
+	}
 	/* object "poly_mesh" : opt // ***EXPERIMENTAL*** A triangle or quad mesh object.  Can be used in conjunction with cubes and texture geometry.
         {
             bool "normalized_uvs" : opt // If true, UVs are assumed to be [0-1].  If false, UVs are assumed to be [0-texture_width] and [0-texture_height] respectively.

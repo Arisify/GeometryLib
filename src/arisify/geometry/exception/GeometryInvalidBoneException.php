@@ -19,5 +19,4 @@ namespace arisify\geometry\exception;
 use RuntimeException;
 
 class GeometryInvalidBoneException extends RuntimeException{
-
 }

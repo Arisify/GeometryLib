@@ -18,5 +18,5 @@ namespace arisify\geometry\exception;
 
 use RuntimeException;
 
-class GeometryInvalidDescriptionException extends RuntimeException{
+class GeometryInvalidPolyItemException extends RuntimeException{
 }
