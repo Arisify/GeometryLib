@@ -14,7 +14,7 @@
  */
 declare(strict_types=1);
 
-namespace arisify\geometry;
+namespace arisify\geometry\element;
 
 use arisify\geometry\exception\GeometryInvalidPolyItemException;
 use pocketmine\math\Vector3;

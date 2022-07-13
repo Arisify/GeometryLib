@@ -14,7 +14,7 @@
 */
 declare(strict_types=1);
 
-namespace arisify\geometry;
+namespace arisify\geometry\element;
 
 use arisify\geometry\exception\GeometryInvalidDescriptionException;
 use pocketmine\math\Vector3;
@@ -89,7 +89,7 @@ class Description{
 	 * @param int $texture_width
 	 */
 	public function setTextureWidth(int $texture_width) : void{
-		if ($texture_width < 0) {
+		if ($texture_width <= 0) {
 			throw new GeometryInvalidDescriptionException("Texture's weight should be greater than 0! $texture_width was given!");
 		}
 		$this->texture_width = $texture_width;
@@ -106,7 +106,7 @@ class Description{
 	 * @param int $texture_height
 	 */
 	public function setTextureHeight(int $texture_height) : void{
-		if ($texture_height < 0) {
+		if ($texture_height <= 0) {
 			throw new GeometryInvalidDescriptionException("Texture's height should be greater than 0! $texture_height was given!");
 		}
 		$this->texture_height = $texture_height;

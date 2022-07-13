@@ -16,6 +16,9 @@ declare(strict_types=1);
 
 namespace arisify\geometry;
 
+use arisify\geometry\element\Bone;
+use arisify\geometry\element\Description;
+
 class Geometry{
 	/** @var Bone[] */
 	private array $bones;

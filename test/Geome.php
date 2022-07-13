@@ -50,9 +50,10 @@ $known_uv = "array|object";
 
 function checkVarType(string $predict, string $real) : bool{
 	$validate = static fn(string $s) => match(strtolower($s)) {
-		"int", "integer", "float" => "double",
+		"int", "integer", "float", "double", "long", "long long" => "number",
 		"bool" => "boolean",
 		"str" => "string",
+		"obj" => "object",
 		default => $s
 	};
 	foreach (explode('|', $predict) as $p) {
@@ -117,6 +118,7 @@ foreach(glob(MCPATH . "*") as $file) {
 		case "1.12.0":
 		case "1.16.0":
 			$geometries = (array) $data["minecraft:geometry"];
+			// $geometries = $data->{"minecraft:geometry"};
 			break;
 		default:
 			print("> A new format_version was added: " . $format_version . PHP_EOL . $file . PHP_EOL);

@@ -14,8 +14,7 @@
  */
 declare(strict_types=1);
 
-namespace arisify\geometry;
+namespace arisify\geometry\exception;
 
-class Locator{
-
+class GeometryMissingRequiredItemException extends \RuntimeException{
 }

@@ -14,17 +14,18 @@
  */
 declare(strict_types=1);
 
-namespace arisify\geometry;
+namespace arisify\geometry\element;
 
 use pocketmine\math\Vector3;
+
 use arisify\geometry\exception\GeometryInvalidBoneException;
 
 class Bone{
 	protected string $name;
-	protected bool $reset;
-	protected bool $neverRender;
-	/** @var string Bone that this bone is relative to. If the parent bone moves, this bone will move along with it.*/
-	protected string $parent;
+	protected ?bool $reset;
+	protected ?bool $neverRender;
+	/** @var string|null Bone that this bone is relative to. If the parent bone moves, this bone will move along with it.*/
+	protected ?string $parent;
 	/** @var Vector3|null The bone pivots around this point (in model space units).*/
 	protected ?Vector3 $pivot = null;
 	/** @var Vector3|null This is the initial rotation of the bone around the pivot, pre-animation (in degrees, x-then-y-then-z order).*/
@@ -43,10 +44,13 @@ class Bone{
 	protected ?array $texture_meshes = null; // Optional
 	/** @var PolyMesh[]|null ***EXPERIMENTAL*** A triangle or quad mesh object. Can be used in conjunction with cubes and texture geometry. */
 	protected ?array $poly_meshes = null; // Optional
+
+	protected ?array $locators = null; //Opt
+
 	/**
 	 * @param string       $name
 	 * @param Vector3|null $rotation
-	 * @param Vector3      $pivot
+	 * @param Vector3|null $pivot
 	 * @param Cube[]       $cubes
 	 * @param Vector3[]    $locators
 	 * @param string|null  $parent
@@ -54,16 +58,22 @@ class Bone{
 	 * @param Vector3|null $bind_pose_rotation
 	 */
 	public function __construct(
-		string           $name,
-		protected ?Vector3 $rotation = null,
-		protected Vector3  $pivot = new Vector3(0, 0, 0),
-		protected array    $cubes = [],
-		protected array    $locators = [],
-		protected ?string  $parent = null,
-		protected bool     $mirror = false,
-		protected ?Vector3 $bind_pose_rotation = new Vector3(0,0,0)
+		string             $name,
+		?Vector3 $rotation = null,
+		?Vector3 $pivot = null,
+		?array    $cubes = null,
+		?array    $locators = null,
+		?string  $parent = null,
+		?bool     $mirror = null,
+		?Vector3 $bind_pose_rotation = null
 	) {
 		$this->setName($name);
+		$this->rotation = $rotation;
+		$this->pivot = $pivot;
+		$this->cubes = $cubes;
+		$this->locators = $locators;
+		$this->parent = $parent;
+
 	}
 
 	public function getName() : string{
