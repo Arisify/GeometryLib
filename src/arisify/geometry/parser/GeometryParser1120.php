@@ -16,82 +16,88 @@ declare(strict_types=1);
 
 namespace arisify\geometry\parser;
 
-use arisify\geometry\exception\GeometryInvalidFormatVersionException;
-use arisify\geometry\exception\GeometryMissingFormatVersionException;
-use arisify\geometry\exception\GeometryMissingRequiredItemException;
-use arisify\geometry\Utils;
-use JsonException;
 use arisify\geometry\Geometry;
+use arisify\geometry\Utils;
 use arisify\geometry\element\Bone;
 use arisify\geometry\element\Cube;
 use arisify\geometry\element\Description;
 use arisify\geometry\element\UV;
-use function json_decode;
+use arisify\geometry\exception\GeometryMissingFormatVersionException;
+use arisify\geometry\exception\GeometryMissingRequiredItemException;
+
+use arisify\jsonhelper\JsonHelper;
+use arisify\jsonhelper\JsonObject;
+
 use pocketmine\math\Vector2;
 
 class GeometryParser1120 implements GeometryParser{
 	public const FORMAT_VERSION = "1.12.0";
 
 	/**
-	 * @param string|\stdClass $model
+	 * @param JsonObject $model
 	 * @return Geometry[]
-	 * @throws JsonException
 	 */
-	public static function parseModel(string|\stdClass $model) : array{
-		if (!$model instanceof \stdClass) {
-			$model = json_decode($model, false, 512, JSON_THROW_ON_ERROR);
-		}
-		if (!isset($model->format_version) || in_array($model->format_version, Utils::FORMAT_VERSION_LIST, true)) {
+	public static function parseModel(JsonObject $model) : array{
+		if ($model->getProperty("format_version") === null) {
 			throw new GeometryMissingFormatVersionException("Format version not found!");
 		}
-		if (!isset($model->{"minecraft:geometry"})) {
+		$geometries = JsonHelper::getAsObject($model, "minecraft:geometry");
+		if ($geometries === null) {
 			throw new GeometryMissingRequiredItemException("minecraft:geometry not found!");
 		}
 
 		/** @var Geometry[] $models */
 		$models = [];
-		foreach ($model->{"minecraft:geometry"} as $geometry) {
-			$models[] = self::parseGeometry($geometry);
+		foreach ($geometries as $geometry) {
+			$models[] = self::parseGeometry(new JsonObject($geometry, ["description"]));
 		}
 		return $models;
 	}
 
 	/**
-	 * @param string|\stdClass $geometry
+	 * @param JsonObject $geometry
 	 * @return Geometry
-	 * @throws JsonException
 	 */
-	public static function parseGeometry(string|\stdClass $geometry) : Geometry{
-		if (!$geometry instanceof \stdClass) {
-			$geometry = json_decode($geometry, false, 512, JSON_THROW_ON_ERROR);
-		}
-		if (!isset($geometry->description)) {
+	public static function parseGeometry(JsonObject $geometry) : Geometry{
+		$description = JsonHelper::getAsObject($geometry, "description");
+		$bones = JsonHelper::getAsArray($geometry, "bones");
+		$cape = JsonHelper::getAsString($geometry, "cape");
+		if ($description === null) {
 			throw new GeometryMissingRequiredItemException("Missing description");
 		}
+		$description = self::parseDescription(new JsonObject($description, ["identifier"]));
+		if ($bones !== null) {
+			$bb = [];
+			foreach ($bones as $bone) {
+				$b = self::parseBone(new JsonObject($bone, ["name"]));
+				if ($b !== null) {
+					$bb[$b->getName()] = $b;
+				}
+			}
+			$bones = $bb;
+		}
+
 		return new Geometry(
 			format_version: self::FORMAT_VERSION,
-			description: self::parseDescription($geometry->description),
-			bones: self::parseBones($geometry?->bone), //array
-			cape: $geometry?->cape //string
+			description: $description,
+			bones: $bones,
+			cape: $cape
 		);
 	}
 
 	/**
-	 * @param string|\stdClass $description
+	 * @param JsonObject $description
 	 * @return Description
-	 * @throws JsonException
 	 */
-	public static function parseDescription(string|\stdClass $description) : Description{
-		if (!$description instanceof \stdClass) {
-			$description = json_decode($description, false, 512, JSON_THROW_ON_ERROR);
-		}
-		if (!isset($description->identifier)) {
+	public static function parseDescription(JsonObject $description) : Description{
+		$identifier = JsonHelper::getAsString($description, $description);
+		if ($identifier === null) {
 			throw new GeometryMissingRequiredItemException("Missing identifier");
 		}
 		// TODO: A json parser that validate the format
 		// ?-> weird but does shorter than "$var ?? null" lol
 		return new Description(
-			identifier: $description->identifier, //type: string
+			identifier: $identifier, //type: string
 			texture_width: $description?->texture_width, //type: int (> 0), opt
 			texture_height: $description?->texture_height, //type: int (> 0), opt
 			visible_bounds_width: $description?->visible_bounds_width, //type: number, opt
@@ -101,16 +107,12 @@ class GeometryParser1120 implements GeometryParser{
 	}
 
 	/**
-	 * @param string|array|\stdClass|null $bones
-	 * @return Bone[]|null
-	 * @throws JsonException
+	 * @param JsonObject|null $bones
+	 * @return Bone|null
 	 */
-	public static function parseBones(string|array|null|\stdClass $bones) : ?array{
+	public static function parseBone(?JsonObject $bones) : ?Bone{
 		if ($bones === null) {
 			return null;
-		}
-		if (!$bones instanceof \stdClass) {
-			$bones = json_decode($bones, false, 512, JSON_THROW_ON_ERROR);
 		}
 		$bone_data = [];
 		foreach ($bones as $bone) {
@@ -139,16 +141,12 @@ class GeometryParser1120 implements GeometryParser{
 	}
 
 	/**
-	 * @param string|\stdClass|null $cubes
+	 * @param JsonObject|null $cubes
 	 * @return Cube[]|null
-	 * @throws JsonException
 	 */
-	public static function parseCubes(string|\stdClass|null $cubes) : ?array{
+	public static function parseCube(?JsonObject $cubes) : ?array{
 		if ($cubes === null) {
 			return null;
-		}
-		if (!$cubes instanceof \stdClass) {
-			$cubes = json_decode($cubes, false, 512, JSON_THROW_ON_ERROR);
 		}
 		$cube_data = [];
 		foreach ($cubes as $cube) {
@@ -166,19 +164,14 @@ class GeometryParser1120 implements GeometryParser{
 	}
 
 	/**
-	 * @param string|\stdClass|null $uv
-	 * @param bool                  $eachFace
+	 * @param JsonObject|null $uv
+	 * @param bool            $eachFace
 	 * @return Vector2|UV|null
-	 * @throws JsonException
 	 */
-	public static function parseUV(string|\stdClass|null $uv, bool $eachFace = true) : Vector2|UV|null{
+	public static function parseUV(?JsonObject $uv, bool $eachFace = true) : Vector2|UV|null{
 		if ($uv === null) {
 			return null;
 		}
-		if (!$uv instanceof \stdClass) {
-			$uv = json_decode($uv, false, 512, JSON_THROW_ON_ERROR);
-		}
-
 		return null;
 	}
 

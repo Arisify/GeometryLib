@@ -21,39 +21,40 @@ use arisify\geometry\element\Cube;
 use arisify\geometry\element\Description;
 use arisify\geometry\element\UV;
 use arisify\geometry\Geometry;
+use arisify\jsonhelper\JsonObject;
 use pocketmine\math\Vector2;
 
 interface GeometryParser{
 	public const FORMAT_VERSION = "0.0.0";
 
 	/**
-	 * @param \stdClass|string $model
+	 * @param JsonObject $model
 	 * @return Geometry[]
 	 */
-	public static function parseModel(\stdClass|string $model) : array;
+	public static function parseModel(JsonObject $model) : array;
 
-	public static function parseGeometry(\stdClass|string $geometry) : ?Geometry;
+	public static function parseGeometry(JsonObject $geometry) : Geometry;
 
-	public static function parseDescription(\stdClass|string $description) : ?Description;
+	public static function parseDescription(JsonObject $description) : ?Description;
 
 	/**
-	 * @param \stdClass|string|null $bones
+	 * @param JsonObject $bones
 	 * @return Bone[]|null
 	 */
-	public static function parseBones(\stdClass|string|null $bones) : ?array;
+	public static function parseBone(JsonObject $bones) : ?Bone;
 
 	/**
-	 * @param \stdClass|string|null $cubes
+	 * @param JsonObject|null $cubes
 	 * @return Cube[]|null
 	 */
-	public static function parseCubes(\stdClass|string|null $cubes) : ?array;
+	public static function parseCube(JsonObject|null $cubes) : ?Cube;
 
 	/**
-	 * @param \stdClass|string|null $uv
+	 * @param JsonObject|null $uv
 	 * @param bool                  $eachFace
 	 * @return Vector2|UV|null
 	 */
-	public static function parseUV(\stdClass|string|null $uv, bool $eachFace = true) : Vector2|UV|null;
+	public static function parseUV(JsonObject|null $uv, bool $eachFace = true) : Vector2|UV|null;
 
 	public static function checkFormatVersion(string $version) : bool;
 }
