@@ -8,6 +8,6 @@ projects:
     model: virion
     type: library
     libs:
-      - src: Arisify\JsonHelper\JsonHelper
+      - src: Arisify/JsonHelper/JsonHelper
         version: ^0.0.1
 ...
