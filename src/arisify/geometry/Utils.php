@@ -59,4 +59,13 @@ class Utils{
 		}
 		return -1;
 	}
+
+	public static function readJson(mixed $content, string $key, mixed $default = null, ?string $type = null) : mixed{
+		if (is_string($content)) {
+			$content = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
+		}
+		$result = $content instanceof \stdClass ? $content->{$key} ?? $default : $content[$key] ?? $default;
+
+		return ($type !== null && gettype($result) !== $type) ? $default : $result;
+	}
 }

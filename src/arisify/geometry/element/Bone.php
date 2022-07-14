@@ -43,37 +43,59 @@ class Bone{
 	/** @var TextureMesh[]|null ***EXPERIMENTAL*** Adds a mesh to the bone's geometry by converting texels in a texture into boxes */
 	protected ?array $texture_meshes = null; // Optional
 	/** @var PolyMesh[]|null ***EXPERIMENTAL*** A triangle or quad mesh object. Can be used in conjunction with cubes and texture geometry. */
-	protected ?array $poly_meshes = null; // Optional
+	protected ?array $poly_mesh = null; // Optional
 
 	protected ?array $locators = null; //Opt
 
 	/**
-	 * @param string       $name
-	 * @param Vector3|null $rotation
-	 * @param Vector3|null $pivot
-	 * @param Cube[]       $cubes
-	 * @param Vector3[]    $locators
-	 * @param string|null  $parent
-	 * @param bool         $mirror
-	 * @param Vector3|null $bind_pose_rotation
+	 * @param string         $name
+	 * @param Cube[]         $cubes
+	 * @param Vector3|null   $rotation
+	 * @param Vector3|null   $pivot
+	 * @param Vector3[]      $locators
+	 * @param string|null    $parent
+	 * @param bool           $mirror
+	 * @param bool|null      $reset
+	 * @param bool|null      $debug
+	 * @param Vector3|null   $bind_pose_rotation
+	 * @param float|int|null $inflate
+	 * @param bool|null      $neverRender
+	 * @param int|null       $render_group_id
+	 * @param array|null     $poly_mesh
+	 * @param array|null     $texture_meshes
 	 */
 	public function __construct(
-		string             $name,
-		?Vector3 $rotation = null,
-		?Vector3 $pivot = null,
-		?array    $cubes = null,
-		?array    $locators = null,
-		?string  $parent = null,
-		?bool     $mirror = null,
-		?Vector3 $bind_pose_rotation = null
-	) {
+		string         $name,
+        ?array         $cubes = null,
+        ?Vector3       $rotation = null,
+        ?Vector3       $pivot = null,
+        ?array         $locators = null,
+        ?string        $parent = null,
+        ?bool          $mirror = null,
+        ?bool          $reset = null,
+        ?bool          $debug = null,
+        ?Vector3       $bind_pose_rotation = null,
+        float|int|null $inflate = null,
+        ?bool          $neverRender = null,
+        ?int           $render_group_id = null,
+        ?array         $poly_mesh = null,
+        ?array         $texture_meshes = null,
+	){
 		$this->setName($name);
 		$this->rotation = $rotation;
 		$this->pivot = $pivot;
 		$this->cubes = $cubes;
 		$this->locators = $locators;
 		$this->parent = $parent;
-
+		$this->mirror = $mirror;
+		$this->reset = $reset;
+		$this->debug = $debug;
+		$this->bind_pose_rotation = $bind_pose_rotation;
+		$this->inflate = $inflate;
+		$this->neverRender = $neverRender;
+		$this->render_group_id = $render_group_id;
+		$this->poly_mesh = $poly_mesh;
+		$this->texture_meshes = $texture_meshes;
 	}
 
 	public function getName() : string{

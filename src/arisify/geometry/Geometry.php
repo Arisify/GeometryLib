@@ -39,8 +39,7 @@ class Geometry{
 		protected string      $format_version,
 		protected Description $description,
 	    ?array                 $bones = null, // Optional
-		?string               $cape = null, // Optional
-		protected ?array      $rawData = null
+		?string               $cape = null // Optional
 	){
 	}
 
@@ -54,7 +53,8 @@ class Geometry{
 			$rawBones = $this->rawData[self::BONES];
 			$bones = [];
 			foreach ($this->bones as $bone) {
-				$bones[] = $bone->toArray($rawBones[$bone->()] ?? []);
+				// TODO: AJANJ
+				//$bones[] = $bone->toArray($rawBones[$bone->()] ?? []);
 			}
 			$this->rawData[self::BONES] = $bones;
 			try {

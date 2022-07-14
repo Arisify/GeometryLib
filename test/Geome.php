@@ -83,6 +83,12 @@ foreach(glob(MCPATH . "*") as $file) {
 		print ("> Error when trying to read $file");
 		continue;
 	}
+	if ($data["format_version"] === "1.12.0") {
+		$data = json_decode(json_encode($data, JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
+		print_r($data);
+		break;
+	}
+	continue;
 	if (!isset($data["format_version"])) {
 		print("> Format version not found in $file" . PHP_EOL .  PHP_EOL);
 		continue;

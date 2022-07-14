@@ -113,7 +113,7 @@
                   "$ref": "meta.json#/definitions/coordinates_3d"
                 },
                 "mirror": {
-                  "description": "Mirrors the UV's of the unrotated cubes along the x axis, also causes the east/west faces to get flipped.",
+                  "description": "Mirrors the UV's of the un-rotated cubes along the x axis, also causes the east/west faces to get flipped.",
                   "type": "boolean"
                 },
                 "inflate": {
@@ -133,7 +133,7 @@
                     "type": "object",
                     "properties": {
                       "origin": {
-                        "description": "This point declares the unrotated lower corner of cube (smallest x/y/z value in model space units).",
+                        "description": "This point declares the un-rotated lower corner of cube (smallest x/y/z value in model space units).",
                         "$ref": "meta.json#/definitions/coordinates_3d"
                       },
                       "size": {
@@ -153,7 +153,7 @@
                         "type": "number"
                       },
                       "mirror": {
-                        "description": "Mirrors this cube about the unrotated x axis (effectively flipping the east / west faces), overriding the bone's 'mirror' setting for this cube.",
+                        "description": "Mirrors this cube about the un-rotated x axis (effectively flipping the east / west faces), overriding the bone's 'mirror' setting for this cube.",
                         "type": "boolean"
                       },
                       "uv": {
@@ -262,7 +262,7 @@
                           "description": "Poly element indices, as an array of polygons, each an array of either three or four vertices, each an array of indices into positions, normals, and UVs (in that order).",
                           "type": "array",
                           "items": {
-                            "description": "A Polygon, defined by 3 or 4 Verticies",
+                            "description": "A Polygon, defined by 3 or 4 vertices",
                             "type": "array",
                             "minItems": 3,
                             "maxItems": 4,

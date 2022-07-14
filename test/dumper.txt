@@ -1,0 +1,347 @@
+C:\Users\TGDD-MSI\Downloads\PocketMine-MP\bin\php\php.exe D:\phpstorm\GeometryLib\test\Geome.php
+stdClass Object
+(
+    [format_version] => 1.12.0
+    [minecraft:geometry] => Array
+        (
+            [0] => stdClass Object
+                (
+                    [description] => stdClass Object
+                        (
+                            [identifier] => geometry.allay
+                            [texture_width] => 32
+                            [texture_height] => 32
+                            [visible_bounds_width] => 3
+                            [visible_bounds_height] => 2.5
+                            [visible_bounds_offset] => Array(3)
+                                (
+                                    [0] => 0
+                                    [1] => 0.75
+                                    [2] => 0
+                                )
+
+                        )
+
+                    [bones] => Array
+                        (
+                            [0] => stdClass Object
+                                (
+                                    [name] => root
+                                    [pivot] => Array
+                                        (
+                                            [0] => 0
+                                            [1] => 0
+                                            [2] => 0
+                                        )
+
+                                )
+
+                            [1] => stdClass Object
+                                (
+                                    [name] => head
+                                    [parent] => root
+                                    [pivot] => Array
+                                        (
+                                            [0] => 0
+                                            [1] => 4
+                                            [2] => 0
+                                        )
+
+                                    [cubes] => Array
+                                        (
+                                            [0] => stdClass Object
+                                                (
+                                                    [origin] => Array
+                                                        (
+                                                            [0] => -2.5
+                                                            [1] => 4.01
+                                                            [2] => -2.5
+                                                        )
+
+                                                    [size] => Array
+                                                        (
+                                                            [0] => 5
+                                                            [1] => 5
+                                                            [2] => 5
+                                                        )
+
+                                                    [uv] => Array
+                                                        (
+                                                            [0] => 0
+                                                            [1] => 0
+                                                        )
+
+                                                )
+
+                                        )
+
+                                )
+
+                            [2] => stdClass Object
+                                (
+                                    [name] => body
+                                    [parent] => root
+                                    [pivot] => Array
+                                        (
+                                            [0] => 0
+                                            [1] => 4
+                                            [2] => 0
+                                        )
+
+                                    [cubes] => Array
+                                        (
+                                            [0] => stdClass Object
+                                                (
+                                                    [origin] => Array
+                                                        (
+                                                            [0] => -1.5
+                                                            [1] => 0
+                                                            [2] => -1
+                                                        )
+
+                                                    [size] => Array
+                                                        (
+                                                            [0] => 3
+                                                            [1] => 4
+                                                            [2] => 2
+                                                        )
+
+                                                    [uv] => Array
+                                                        (
+                                                            [0] => 0
+                                                            [1] => 10
+                                                        )
+
+                                                )
+
+                                            [1] => stdClass Object
+                                                (
+                                                    [origin] => Array
+                                                        (
+                                                            [0] => -1.5
+                                                            [1] => -1
+                                                            [2] => -1
+                                                        )
+
+                                                    [size] => Array
+                                                        (
+                                                            [0] => 3
+                                                            [1] => 5
+                                                            [2] => 2
+                                                        )
+
+                                                    [inflate] => -0.2
+                                                    [uv] => Array
+                                                        (
+                                                            [0] => 0
+                                                            [1] => 16
+                                                        )
+
+                                                )
+
+                                        )
+
+                                    [locators] => stdClass Object
+                                        (
+                                            [lead] => Array
+                                                (
+                                                    [0] => 0
+                                                    [1] => 5
+                                                    [2] => 0
+                                                )
+
+                                        )
+
+                                )
+
+                            [3] => stdClass Object
+                                (
+                                    [name] => rightItem
+                                    [parent] => body
+                                    [pivot] => Array
+                                        (
+                                            [0] => 0
+                                            [1] => -1
+                                            [2] => -2
+                                        )
+
+                                    [rotation] => Array
+                                        (
+                                            [0] => -80
+                                            [1] => 0
+                                            [2] => 0
+                                        )
+
+                                )
+
+                            [4] => stdClass Object
+                                (
+                                    [name] => right_arm
+                                    [parent] => body
+                                    [pivot] => Array
+                                        (
+                                            [0] => -1.75
+                                            [1] => 3.5
+                                            [2] => 0
+                                        )
+
+                                    [cubes] => Array
+                                        (
+                                            [0] => stdClass Object
+                                                (
+                                                    [origin] => Array
+                                                        (
+                                                            [0] => -2.5
+                                                            [1] => 0
+                                                            [2] => -1
+                                                        )
+
+                                                    [size] => Array
+                                                        (
+                                                            [0] => 1
+                                                            [1] => 4
+                                                            [2] => 2
+                                                        )
+
+                                                    [uv] => Array
+                                                        (
+                                                            [0] => 23
+                                                            [1] => 0
+                                                        )
+
+                                                )
+
+                                        )
+
+                                )
+
+                            [5] => stdClass Object
+                                (
+                                    [name] => left_arm
+                                    [parent] => body
+                                    [pivot] => Array
+                                        (
+                                            [0] => 1.75
+                                            [1] => 3.5
+                                            [2] => 0
+                                        )
+
+                                    [cubes] => Array
+                                        (
+                                            [0] => stdClass Object
+                                                (
+                                                    [origin] => Array
+                                                        (
+                                                            [0] => 1.5
+                                                            [1] => 0
+                                                            [2] => -1
+                                                        )
+
+                                                    [size] => Array
+                                                        (
+                                                            [0] => 1
+                                                            [1] => 4
+                                                            [2] => 2
+                                                        )
+
+                                                    [uv] => Array
+                                                        (
+                                                            [0] => 23
+                                                            [1] => 6
+                                                        )
+
+                                                )
+
+                                        )
+
+                                )
+
+                            [6] => stdClass Object
+                                (
+                                    [name] => left_wing
+                                    [parent] => body
+                                    [pivot] => Array
+                                        (
+                                            [0] => 0.5
+                                            [1] => 3
+                                            [2] => 1
+                                        )
+
+                                    [cubes] => Array
+                                        (
+                                            [0] => stdClass Object
+                                                (
+                                                    [origin] => Array
+                                                        (
+                                                            [0] => 0.5
+                                                            [1] => -2
+                                                            [2] => 1
+                                                        )
+
+                                                    [size] => Array
+                                                        (
+                                                            [0] => 0
+                                                            [1] => 5
+                                                            [2] => 8
+                                                        )
+
+                                                    [uv] => Array
+                                                        (
+                                                            [0] => 16
+                                                            [1] => 14
+                                                        )
+
+                                                )
+
+                                        )
+
+                                )
+
+                            [7] => stdClass Object
+                                (
+                                    [name] => right_wing
+                                    [parent] => body
+                                    [pivot] => Array
+                                        (
+                                            [0] => -0.5
+                                            [1] => 3
+                                            [2] => 1
+                                        )
+
+                                    [cubes] => Array
+                                        (
+                                            [0] => stdClass Object
+                                                (
+                                                    [origin] => Array
+                                                        (
+                                                            [0] => -0.5
+                                                            [1] => -2
+                                                            [2] => 1
+                                                        )
+
+                                                    [size] => Array
+                                                        (
+                                                            [0] => 0
+                                                            [1] => 5
+                                                            [2] => 8
+                                                        )
+
+                                                    [uv] => Array
+                                                        (
+                                                            [0] => 16
+                                                            [1] => 14
+                                                        )
+
+                                                )
+
+                                        )
+
+                                )
+
+                        )
+
+                )
+
+        )
+
+)

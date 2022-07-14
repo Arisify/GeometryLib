@@ -32,27 +32,28 @@ interface GeometryParser{
 	 */
 	public static function parseModel(\stdClass|string $model) : array;
 
-	public static function parseGeometry(\stdClass|string $geometry, string $format_version) : ?Geometry;
+	public static function parseGeometry(\stdClass|string $geometry) : ?Geometry;
 
 	public static function parseDescription(\stdClass|string $description) : ?Description;
 
 	/**
-	 * @param \stdClass|string $bones
+	 * @param \stdClass|string|null $bones
 	 * @return Bone[]|null
 	 */
-	public static function parseBones(\stdClass|string $bones) : ?array;
+	public static function parseBones(\stdClass|string|null $bones) : ?array;
 
 	/**
-	 * @param \stdClass|string $cubes
+	 * @param \stdClass|string|null $cubes
 	 * @return Cube[]|null
 	 */
-	public static function parseCubes(\stdClass|string $cubes) : ?array;
+	public static function parseCubes(\stdClass|string|null $cubes) : ?array;
 
 	/**
-	 * @param \stdClass|string $uv
+	 * @param \stdClass|string|null $uv
+	 * @param bool                  $eachFace
 	 * @return Vector2|UV|null
 	 */
-	public static function parseUV(\stdClass|string $uv, bool $eachFace = true) : Vector2|UV|null;
+	public static function parseUV(\stdClass|string|null $uv, bool $eachFace = true) : Vector2|UV|null;
 
 	public static function checkFormatVersion(string $version) : bool;
 }
