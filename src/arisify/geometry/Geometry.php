@@ -47,6 +47,7 @@ class Geometry{
 		return $this->format_version;
 	}
 
+	/*
 	public function toJson(int $flags = 0) : string{
 		if ($this->rawData !== null) {
 			$this->description->toArray($this->rawData[self::DESCRIPTION]);
@@ -73,6 +74,7 @@ class Geometry{
 			return "";
 		}
 	}
+	*/
 
 	/**
 	 * @return Description
