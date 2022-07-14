@@ -38,23 +38,14 @@ interface GeometryParser{
 	public static function parseDescription(JsonObject $description) : ?Description;
 
 	/**
-	 * @param JsonObject $bones
-	 * @return Bone[]|null
+	 * @param JsonObject $bone
+	 * @return Bone
 	 */
-	public static function parseBone(JsonObject $bones) : ?Bone;
+	public static function parseBone(JsonObject $bone) : Bone;
 
 	/**
-	 * @param JsonObject|null $cubes
-	 * @return Cube[]|null
+	 * @param JsonObject $cube
+	 * @return Cube
 	 */
-	public static function parseCube(JsonObject|null $cubes) : ?Cube;
-
-	/**
-	 * @param JsonObject|null $uv
-	 * @param bool                  $eachFace
-	 * @return Vector2|UV|null
-	 */
-	public static function parseUV(JsonObject|null $uv, bool $eachFace = true) : Vector2|UV|null;
-
-	public static function checkFormatVersion(string $version) : bool;
+	public static function parseCube(JsonObject $cube) : Cube;
 }

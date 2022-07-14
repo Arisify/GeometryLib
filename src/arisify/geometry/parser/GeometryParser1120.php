@@ -16,6 +16,10 @@ declare(strict_types=1);
 
 namespace arisify\geometry\parser;
 
+use arisify\geometry\element\FaceUV;
+use arisify\geometry\element\Locator;
+use arisify\geometry\element\Polymesh;
+use arisify\geometry\element\TextureMesh;
 use arisify\geometry\Geometry;
 use arisify\geometry\Utils;
 use arisify\geometry\element\Bone;
@@ -27,7 +31,6 @@ use arisify\geometry\exception\GeometryMissingRequiredItemException;
 
 use arisify\jsonhelper\JsonHelper;
 use arisify\jsonhelper\JsonObject;
-
 use pocketmine\math\Vector2;
 
 class GeometryParser1120 implements GeometryParser{
@@ -70,19 +73,12 @@ class GeometryParser1120 implements GeometryParser{
 			$bb = [];
 			foreach ($bones as $bone) {
 				$b = self::parseBone(new JsonObject($bone, ["name"]));
-				if ($b !== null) {
-					$bb[$b->getName()] = $b;
-				}
+				$bb[$b->getName()] = $b;
 			}
 			$bones = $bb;
 		}
 
-		return new Geometry(
-			format_version: self::FORMAT_VERSION,
-			description: $description,
-			bones: $bones,
-			cape: $cape
-		);
+		return new Geometry(self::FORMAT_VERSION, $description, $bones, $cape);
 	}
 
 	/**
@@ -94,100 +90,109 @@ class GeometryParser1120 implements GeometryParser{
 		if ($identifier === null) {
 			throw new GeometryMissingRequiredItemException("Missing identifier");
 		}
-		// TODO: A json parser that validate the format
-		// ?-> weird but does shorter than "$var ?? null" lol
 		return new Description(
-			identifier: $identifier, //type: string
-			texture_width: $description?->texture_width, //type: int (> 0), opt
-			texture_height: $description?->texture_height, //type: int (> 0), opt
-			visible_bounds_width: $description?->visible_bounds_width, //type: number, opt
-			visible_bounds_height: $description?->visible_bounds_height, //type: number, opt
-			visible_bounds_offset: Utils::arraytovector($description?->visible_bounds_offset) //type: Vector3, opt
+			$identifier, //type: string
+			JsonHelper::getAsInt($description, "texture_width"), //type: int (> 0), opt
+			JsonHelper::getAsInt($description, "texture_height"), //type: int (> 0), opt
+			JsonHelper::getAsFloat($description, "visible_bounds_width"), //type: number, opt
+			JsonHelper::getAsFloat($description, "visible_bounds_height"), //type: number, opt
+			Utils::arraytovector(JsonHelper::getAsArray($description, "visible_bounds_offset")) //type: Vector3, opt
 		);
 	}
 
 	/**
-	 * @param JsonObject|null $bones
-	 * @return Bone|null
+	 * @param JsonObject $bone
+	 * @return Bone
 	 */
-	public static function parseBone(?JsonObject $bones) : ?Bone{
-		if ($bones === null) {
-			return null;
+	public static function parseBone(JsonObject $bone) : Bone{
+		$name = JsonHelper::getAsString($bone, "name");
+		$cubes = JsonHelper::getAsArray($bone, "cubes");
+		if ($name === null) {
+			throw new GeometryMissingRequiredItemException("Missing bone name");
 		}
-		$bone_data = [];
-		foreach ($bones as $bone) {
-			if (!isset($bone->name)) {
-				throw new GeometryMissingRequiredItemException("Missing bone name");
+		if ($cubes !== null) {
+			$cc = [];
+			foreach ($cubes as $cube) {
+				$cc[] = self::parseCube(new JsonObject($cube));
 			}
-			$bone_data[] = new Bone(
-				name: $bone->name,
-				cubes: $bone?->cubes,
-				rotation: Utils::arraytovector($bone?->rotation),
-				pivot: Utils::arraytovector($bone?->pivot),
-				locators: $bone?->locators,
-				parent: $bone?->parent,
-				mirror: $bone?->mirror,
-				reset: $bone?->reset,
-				debug: $bone?->debug,
-				bind_pose_rotation: Utils::arraytovector($bone?->bind_pose_rotation),
-				inflate: $bone?->inflate,
-				neverRender: $bone?->neverRender,
-				render_group_id: $bone?->render_group_id,
-				poly_mesh: $bone?->poly_mesh,
-				texture_meshes: $bone?->texture_meshes
-			);
+			$cubes = $cc;
 		}
-		return empty($bone_data) ? null : $bone_data;
+		return new Bone(
+			$name, $cubes,
+			Utils::arraytovector(JsonHelper::getAsArray($bone, "rotation")),
+			Utils::arraytovector(JsonHelper::getAsArray($bone, "pivot")),
+			$bone?->locators,
+			JsonHelper::getAsString($bone, "parent"),
+			JsonHelper::getAsBool($bone, "mirror"),
+			JsonHelper::getAsBool($bone, "reset"),
+			JsonHelper::getAsBool($bone, "debug"),
+			Utils::arraytovector(JsonHelper::getAsArray($bone, "bind_pose_rotation")),
+			JsonHelper::getAsFloat($bone, "inflate"),
+			JsonHelper::getAsBool($bone, "neverRender"),
+			JsonHelper::getAsInt($bone, "render_group_id"),
+			$bone?->poly_mesh,
+			$bone?->texture_meshes
+		);
 	}
 
 	/**
-	 * @param JsonObject|null $cubes
-	 * @return Cube[]|null
+	 * @param JsonObject $cube
+	 * @return Cube
 	 */
-	public static function parseCube(?JsonObject $cubes) : ?array{
-		if ($cubes === null) {
-			return null;
+	public static function parseCube(JsonObject $cube) : Cube{
+		$uv = $cube->getProperty("uv");
+		if ($uv instanceof \stdClass) {
+			$uv = self::parseUV(new JsonObject($uv));
+		} elseif (is_array($uv)) {
+			$uv = Utils::arraytovector($uv);
+		} else {
+			$uv = null;
 		}
-		$cube_data = [];
-		foreach ($cubes as $cube) {
-			$cube_data[] = new Cube(
-				origin: Utils::arraytovector($cube->origin),
-				size: Utils::arraytovector($cube->size),
-				rotation: Utils::arraytovector($cube->rotation),
-				pivot: Utils::arraytovector($cube->pivot),
-				inflate: $cube->inflat,
-				mirror: $cube->mirror,
-				uv: self::parseUV($cube->uv),
-			);
-		}
-		return $cube_data;
+		/** @var UV|Vector2|null $uv */
+		return new Cube(
+			Utils::arraytovector(JsonHelper::getAsArray($cube, "origin")),
+			Utils::arraytovector(JsonHelper::getAsArray($cube, "size")),
+			Utils::arraytovector(JsonHelper::getAsArray($cube, "rotation")),
+			Utils::arraytovector(JsonHelper::getAsArray($cube, "pivot")),
+			JsonHelper::getAsFloat($cube, "inflate"),
+			JsonHelper::getAsBool($cube, "mirror"),
+			$uv,
+		);
 	}
 
 	/**
-	 * @param JsonObject|null $uv
-	 * @param bool            $eachFace
-	 * @return Vector2|UV|null
+	 * @param JsonObject $uv
+	 * @return UV
 	 */
-	public static function parseUV(?JsonObject $uv, bool $eachFace = true) : Vector2|UV|null{
+	public static function parseUV(JsonObject $uv) : UV{
+		return new UV(
+			north: self::parseFaceUV(new JsonObject(JsonHelper::getAsObject($uv, "north"), ["uv"])),
+			south: self::parseFaceUV(new JsonObject(JsonHelper::getAsObject($uv, "south"), ["uv"])),
+			east: self::parseFaceUV(new JsonObject(JsonHelper::getAsObject($uv, "east"), ["uv"])),
+			west: self::parseFaceUV(new JsonObject(JsonHelper::getAsObject($uv, "west"), ["uv"])),
+			up: self::parseFaceUV(new JsonObject(JsonHelper::getAsObject($uv, "up"), ["uv"])),
+			down: self::parseFaceUV(new JsonObject(JsonHelper::getAsObject($uv, "down"), ["uv"]))
+		);
+	}
+
+	public static function parseFaceUV(JsonHelper $face_uv) : FaceUV{
+		$uv = JsonHelper::getAsArray($face_uv, "uv");
 		if ($uv === null) {
-			return null;
+			throw new GeometryMissingRequiredItemException("Msisinaiakna");
 		}
-		return null;
+		return new FaceUV(
+			uv: Utils::arraytovector($uv),
+			uv_size: Utils::arraytovector(JsonHelper::getAsArray($face_uv, "uv_size")),
+			material_instance: JsonHelper::getAsString($face_uv, "material_instance")
+		);
 	}
 
-	public static function checkFormatVersion(string $version) : bool{
-		return $version === self::FORMAT_VERSION;
+	public static function parseLocator(string|\stdClass $locators) : Locator{
 	}
 
-	public static function parseLocators(string|\stdClass $locators) : array{
-		return [];
+	public static function parsePolyMesh(string|\stdClass $poly_mesh) : Polymesh{
 	}
 
-	public static function parsePolyMesh(string|\stdClass $poly_mesh) : array{
-		return  [];
-	}
-
-	public static function parseTextureMeshes(string|\stdClass $texture_meshes) : array{
-		return  [];
+	public static function parseTextureMesh(string|\stdClass $texture_meshes) : TextureMesh{
 	}
 }
