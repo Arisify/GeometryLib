@@ -44,7 +44,7 @@ class GeometryParser1120 implements GeometryParser{
 		if ($model->getProperty("format_version") === null) {
 			throw new GeometryMissingFormatVersionException("Format version not found!");
 		}
-		$geometries = JsonHelper::getAsObject($model, "minecraft:geometry");
+		$geometries = JsonHelper::getAsObject($model, "minecraft:geometry", false, ["description"]);
 		if ($geometries === null) {
 			throw new GeometryMissingRequiredItemException("minecraft:geometry not found!");
 		}
@@ -52,7 +52,7 @@ class GeometryParser1120 implements GeometryParser{
 		/** @var Geometry[] $models */
 		$models = [];
 		foreach ($geometries as $geometry) {
-			$models[] = self::parseGeometry(new JsonObject($geometry, ["description"]));
+			$models[] = self::parseGeometry($geometry);
 		}
 		return $models;
 	}
@@ -62,13 +62,13 @@ class GeometryParser1120 implements GeometryParser{
 	 * @return Geometry
 	 */
 	public static function parseGeometry(JsonObject $geometry) : Geometry{
-		$description = JsonHelper::getAsObject($geometry, "description");
+		$description = JsonHelper::getAsObject($geometry, "description", false, ["identifier"]);
 		$bones = JsonHelper::getAsArray($geometry, "bones");
 		$cape = JsonHelper::getAsString($geometry, "cape");
 		if ($description === null) {
 			throw new GeometryMissingRequiredItemException("Missing description");
 		}
-		$description = self::parseDescription(new JsonObject($description, ["identifier"]));
+		$description = self::parseDescription($description);
 		if ($bones !== null) {
 			$bb = [];
 			foreach ($bones as $bone) {
@@ -175,7 +175,7 @@ class GeometryParser1120 implements GeometryParser{
 		);
 	}
 
-	public static function parseFaceUV(JsonHelper $face_uv) : FaceUV{
+	public static function parseFaceUV(JsonObject $face_uv) : FaceUV{
 		$uv = JsonHelper::getAsArray($face_uv, "uv");
 		if ($uv === null) {
 			throw new GeometryMissingRequiredItemException("Msisinaiakna");

@@ -345,3 +345,222 @@ stdClass Object
         )
 
 )
+
+
+{
+    "properties" = {
+        "format_version": "string",
+        "minecraft:geometry": {
+            "description": {
+              "identifier": "string",
+              "visible_bounds_width": "double",
+              "visible_bounds_height": "double",
+              "visible_bounds_offset": "array",
+              "texture_width": "int",
+              "texture_height": "int",
+            },
+            "bones": {
+                "type" = "array"
+                "item_type" = "object",
+                "items" = [
+
+                ]
+            },
+            "cape": "string"
+        }
+    }
+    "required": ["format_version"]
+}
+
+{
+    {
+    "format_version": "string",
+    "minecraft:geometry": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "object",
+            "properties": {
+            },
+            "required": [
+              "identifier"
+            ],
+
+          },
+          "cape": "string",
+          "bones": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": "string",
+                "reset": "bool",
+                "neverRender": "bool",
+                "parent": "string",
+                "pivot": "array",
+                "rotation": "array"
+                "bind_pose_rotation": "array",
+                "mirror": "bool",
+                "inflate": "double",
+                "debug": "bool",
+                "render_group_id": "int"
+                "cubes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "origin": "array",
+                      "size": "array",
+                      "rotation": "array",
+                      "pivot": "array",
+                      "inflate": "double",
+                      "mirror": "bool",
+                      "uv": {
+                        "oneOf": [
+                          {
+                            type": "array"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "north,south,east,west,up,down": "array"
+                            },
+                          }
+                        ]
+                      }
+                    },
+                  }
+                },
+                "locators": {
+                  "description": "This is a list of locators associated with this bone.  A locator is a point in model space that tracks a particular bone as the bone animates (by maintaining it's relationship to the bone through the animation).",
+                  "type": "object",
+                  "additionalProperties": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "offset": {
+                            "description": "Position of the locator in model space.",
+                            "$ref": "meta.json#/definitions/coordinates_3d"
+                          },
+                          "rotation": {
+                            "description": "Rotation of the locator in model space.",
+                            "$ref": "meta.json#/definitions/coordinates_3d"
+                          },
+                          "ignore_inherited_scale": {
+                            "description": "Discard scale inherited from parent bone.",
+                            "type": "bool"
+                          }
+                        },
+
+                      },
+                      {
+                        "description": "Position of the locator in model space.",
+                        "$ref": "meta.json#/definitions/coordinates_3d"
+                      }
+                    ]
+                  }
+                },
+                "poly_mesh": {
+                  "description": "***EXPERIMENTAL*** A triangle or quad mesh object.  Can be used in conjunction with cubes and texture geometry.",
+                  "type": "object",
+                  "properties": {
+                    "normalized_uvs": {
+                      "description": "If true, UVs are assumed to be [0-1].  If false, UVs are assumed to be [0-texture_width] and [0-texture_height] respectively.",
+                      "type": "bool"
+                    },
+                    "positions": {
+                      "description": "Vertex positions for the mesh.  Can be either indexed via the \"polys\" section, or be a quad-list if mapped 1-to-1 to the normals and UVs sections.",
+                      "$ref": "meta.json#/definitions/coordinates_3d"
+                    },
+                    "normals": {
+                      "description": "Vertex normals.  Can be either indexed via the \"polys\" section, or be a quad-list if mapped 1-to-1 to the positions and UVs sections.",
+                      "$ref": "meta.json#/definitions/coordinates_3d"
+                    },
+                    "uvs": {
+                      "description": "Vertex UVs.  Can be either indexed via the \"polys\" section, or be a quad-list if mapped 1-to-1 to the positions and normals sections.",
+                      "$ref": "meta.json#/definitions/coordinates_2d"
+                    },
+                    "polys": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "tri_list",
+                            "quad_list"
+                          ]
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "minItems": 3,
+                            "maxItems": 4,
+                            "items": {
+                              "$ref": "meta.json#/definitions/coordinates_3d"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "polys"
+                  ],
+
+                },
+                "texture_meshes": {
+                  "description": "***EXPERIMENTAL*** Adds a mesh to the bone's geometry by converting texels in a texture into boxes.",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "texture": "string",
+                      "position,local_pivot,rotation,scale": "array"
+                    },
+                    "required": [
+                      "texture"
+                    ],
+
+                  }
+                }
+              },
+              "required": [
+                "name"
+              ]
+            }
+          }
+        },
+        "required": [
+          "description"
+        ]
+      }
+    }
+    },
+
+
+    "required": [
+        "format_version",
+        "minecraft:geometry"
+    ],
+    "definitions": {
+        "face_uv": {
+          "type": "object",
+          "properties": {
+            "uv": {
+              "description": "Specifies the uv origin for the face. For this face, it is the upper-left corner, when looking at the face with y being up.",
+              "$ref": "meta.json#/definitions/coordinates_2d"
+            },
+            "uv_size": {
+              "description": "The face maps this many texels from the uv origin. If not specified, the box dimensions are used instead.",
+              "$ref": "meta.json#/definitions/coordinates_2d"
+            },
+            "material_instance": {
+              "type": "string"
+            }
+          }
+        }
+    }
+}
