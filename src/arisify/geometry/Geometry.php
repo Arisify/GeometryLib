@@ -11,7 +11,7 @@
  * •.,¸,.•*¯`•.,¸,.•* <|:::::::(｡ ●ω●｡)
  * •.,¸,.•¯•.,¸,.•╰ *  し------し---Ｊ
  *
- */
+*/
 declare(strict_types=1);
 
 namespace arisify\geometry;
@@ -23,18 +23,17 @@ class Geometry{
 	/** @var Bone[] */
 	private array $bones;
 
-	public const MINECRAFT_GEOMETRY = "minecraft:geometry";
+	public const MINECRAFT_GEOMETRY = "minecraft:format";
 	public const FORMAT_VERSION = "format_version";
 	public const DESCRIPTION = "description";
 	public const BONES = "bones";
 
-	/**
-	 * @param string      $format_version
-	 * @param Description $description
-	 * @param Bone[]      $bones Bones define the 'skeleton' of the mob: the parts that can be animated, and to which geometry and other bones are attached.
-	 * @param string|null $cape
-	 * @param array|null  $rawData
-	 */
+    /**
+     * @param string $format_version
+     * @param Description $description
+     * @param Bone[] $bones Bones define the 'skeleton' of the mob: the parts that can be animated, and to which format and other bones are attached.
+     * @param string|null $cape
+     */
 	public function __construct(
 		protected string      $format_version,
 		protected Description $description,

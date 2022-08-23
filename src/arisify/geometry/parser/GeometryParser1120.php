@@ -44,9 +44,9 @@ class GeometryParser1120 implements GeometryParser{
 		if ($model->getProperty("format_version") === null) {
 			throw new GeometryMissingFormatVersionException("Format version not found!");
 		}
-		$geometries = JsonHelper::getAsObject($model, "minecraft:geometry", false, ["description"]);
+		$geometries = JsonHelper::getAsObject($model, "minecraft:format", false, ["description"]);
 		if ($geometries === null) {
-			throw new GeometryMissingRequiredItemException("minecraft:geometry not found!");
+			throw new GeometryMissingRequiredItemException("minecraft:format not found!");
 		}
 
 		/** @var Geometry[] $models */

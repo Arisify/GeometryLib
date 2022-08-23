@@ -27,26 +27,13 @@ class Description{
 	private ?float $visible_bounds_height = null;
 	private ?Vector3 $visible_bounds_offset = null;
 
-	private bool $preserve_model_pose;
-
-	private bool $animationArmsDown;
-	private bool $animationArmsOutFront;
-	private bool $animationStationaryLegs;
-	private bool $animationSingleLegAnimation;
-	private bool $animationSingleArmAnimation;
-	private bool $animationStatueOfLibertyArms;
-	private bool $animationDontShowArmor;
-	private bool $animationNoHeadBob;
-	private bool $animationUpsideDown;
-	private bool $animationInvertedCrouch;
-
 	/**
-	 * @param string       $identifier
-	 * @param int|null     $texture_width Width of the visibility bounding box (in model space units).
-	 * @param int|null     $texture_height Height of the visible bounding box (in model space units).
-	 * @param float|null   $visible_bounds_width Assumed width in texels of the texture that will be bound to this geometry.
-	 * @param float|null   $visible_bounds_height Assumed height in texels of the texture that will be bound to this geometry.
-	 * @param Vector3|null $visible_bounds_offset Offset of the visibility bounding box from the entity location point (in model space units).
+	 * @param string       $identifier Entity definition and Client Block definition files refer to this geometry via this identifier.
+	 * @param int|null     $texture_width Width of the visibility bounding box (in model space units). Opt
+	 * @param int|null     $texture_height Height of the visible bounding box (in model space units). Opt
+	 * @param float|null   $visible_bounds_width Assumed width in texels of the texture that will be bound to this format. Opt
+	 * @param float|null   $visible_bounds_height Assumed height in texels of the texture that will be bound to this format. Opt
+	 * @param Vector3|null $visible_bounds_offset Offset of the visibility bounding box from the entity location point (in model space units). Opt
 	 */
 	public function __construct(
 		string $identifier,
@@ -72,8 +59,8 @@ class Description{
 		if (preg_match('~\W~', $identifier)) {
 			throw new GeometryInvalidDescriptionException("Geometry's identifier ($identifier) must not contain non-Ascii character!");
 		}
-		if (str_starts_with($identifier, "geometry.")) {
-			$identifier = "geometry." . $identifier;
+		if (str_starts_with($identifier, "format.")) {
+			$identifier = "format." . $identifier;
 		}
 		$this->identifier = $identifier;
 	}

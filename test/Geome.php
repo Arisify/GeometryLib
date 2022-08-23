@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-const MCPATH = "C:/Users/TGDD-MSI/Downloads/MC19/";
+const MCPATH = "C:/Users/arie/Downloads/";
 
 $known_root_list = static fn(string $version) => match ($version) {
-	"1.8.0", "1.10.0" => ["format_version" => "string", "geometry.*" => "object"],
-	"1.12.0", "1.16.0" => ["format_version" => "string", "minecraft:geometry" => "array"],
+	"1.8.0", "1.10.0" => ["format_version" => "string", "format.*" => "object"],
+	"1.12.0", "1.16.0" => ["format_version" => "string", "minecraft:format" => "array"],
 	default => null,
 };
 $known_format_version = ["1.8.0", "1.10.0", "1.12.0", "1.16.0"];
@@ -123,8 +123,8 @@ foreach(glob(MCPATH . "*") as $file) {
 			continue 2;
 		case "1.12.0":
 		case "1.16.0":
-			$geometries = (array) $data["minecraft:geometry"];
-			// $geometries = $data->{"minecraft:geometry"};
+			$geometries = (array) $data["minecraft:format"];
+			// $geometries = $data->{"minecraft:format"};
 			break;
 		default:
 			print("> A new format_version was added: " . $format_version . PHP_EOL . $file . PHP_EOL);
